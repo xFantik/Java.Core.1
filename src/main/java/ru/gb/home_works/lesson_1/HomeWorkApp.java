@@ -8,12 +8,14 @@ public class HomeWorkApp {
         compareNumbers();
 
 
-        quadratic(-2,6,9); //Доп задание из телеги (Квадратное уравнение)
+        quadratic(-2,6,9);                      //Доп задание из телеги (Квадратное уравнение)
 
-        {                                               ////Доп задание из телеги (шифр Цезаря)
-            String s_crypt = (crypt("Зашифруйте мне эту строку =))", 16));
+        {                                                   //Доп задание из телеги (шифр Цезаря)
+            System.out.println("\n\n\n\n");
+            int key = -21;
+            String s_crypt = (crypt("Зашифруйте мне эту строку =))", key));
             System.out.println("Зашифрованная строка: " + s_crypt);
-            String s_decrypt = (decrypt(s_crypt, 16));
+            String s_decrypt = (decrypt(s_crypt, key));
             System.out.println("Расшифрованная строка: " + s_decrypt);
         }
 

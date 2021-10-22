@@ -6,14 +6,37 @@ public class HomeWorkApp {
         checkSumSign();
         printColor();
         compareNumbers();
+
+
         quadratic(-2,6,9); //Доп задание из телеги (Квадратное уравнение)
 
-
-
-
+        {                                               ////Доп задание из телеги (шифр Цезаря)
+            String s_crypt = (crypt("Зашифруйте мне эту строку =))", 16));
+            System.out.println("Зашифрованная строка: " + s_crypt);
+            String s_decrypt = (decrypt(s_crypt, 16));
+            System.out.println("Расшифрованная строка: " + s_decrypt);
+        }
 
     }
 
+    public static String crypt(String s, int key){
+        String result = "";
+        for (int i = 0; i < s.length(); i++) {
+            char symbol=s.charAt(i);
+            symbol+=key;
+            result+= symbol;
+        }
+        return result;
+    }
+    public static String decrypt(String s, int key){
+        String result = "";
+        for (int i = 0; i < s.length(); i++) {
+            char symbol=s.charAt(i);
+            symbol-=key;
+            result+= symbol;
+        }
+        return result;
+    }
 
 
     public static void quadratic(int a, int b, int c) {

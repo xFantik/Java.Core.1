@@ -8,9 +8,9 @@ public class HomeWorkApp {
         compareNumbers();
 
 
-        quadratic(-2,6,9);                      //Доп задание из телеги (Квадратное уравнение)
+        quadratic(-2,6,9);                                      //Доп задание из телеги (Квадратное уравнение)
 
-        {                                                   //Доп задание из телеги (шифр Цезаря)
+        {                                                               //Доп задание из телеги (шифр Цезаря)
             System.out.println("\n\n\n\n");
             int key = -21;
             String s_crypt = (crypt("Зашифруйте мне эту строку =))", key));
@@ -19,6 +19,20 @@ public class HomeWorkApp {
             System.out.println("Расшифрованная строка: " + s_decrypt);
         }
 
+        System.out.println("\n\n\n\n"+isPalindrome("12321"));        //Доп задание из телеги (проверка на палиндром)
+
+
+    }
+
+
+    public static boolean isPalindrome(String s){
+        int length=s.length();
+        for (int i = 0; i <=(length/2); i++) {
+            if (s.charAt(i)!=s.charAt(length-i-1)){
+                return false;
+            }
+        }
+        return true;
     }
 
     public static String crypt(String s, int key){

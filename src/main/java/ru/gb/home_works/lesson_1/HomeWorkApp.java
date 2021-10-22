@@ -1,5 +1,5 @@
 package ru.gb.home_works.lesson_1;
-
+//Домашнее задание первого урока
 public class HomeWorkApp {
     public static void main(String[] args) {
         printThreeWords();

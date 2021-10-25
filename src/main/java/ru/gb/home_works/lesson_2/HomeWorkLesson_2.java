@@ -13,7 +13,7 @@ public class HomeWorkLesson_2 {
 
 //                      Написать метод, которому в качестве параметра передается целое число.
 //                      Метод должен вернуть true, если число отрицательное, и вернуть false если положительное.
-        System.out.println(isPositive(8));
+        System.out.println(isNegative(8));
 
 //                      Написать метод, которому в качестве аргументов передается строка и число,
 //                      метод должен отпечатать в консоль указанную строку, указанное количество раз;
@@ -39,8 +39,8 @@ public class HomeWorkLesson_2 {
     }
 
     //3
-    public static boolean isPositive(int a){
-        return (a>=0);
+    public static boolean isNegative(int a){
+        return (a<0);
     }
 
     //4

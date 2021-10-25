@@ -7,7 +7,10 @@ public class HomeWorkApp {
         printColor();
         compareNumbers();
 
+        if (1!=2){
 
+
+        }
         quadratic(-2,6,9);                                      //Доп задание из телеги (Квадратное уравнение)
 
         {                                                               //Доп задание из телеги (шифр Цезаря)
@@ -20,7 +23,6 @@ public class HomeWorkApp {
         }
 
         System.out.println("\n\n\n\n"+isPalindrome("12321"));        //Доп задание из телеги (проверка на палиндром)
-
 
     }
 
@@ -36,22 +38,23 @@ public class HomeWorkApp {
     }
 
     public static String crypt(String s, int key){
-        String result = "";
+//        String result = "";
+        StringBuilder result=new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             char symbol=s.charAt(i);
             symbol+=key;
-            result+= symbol;
+            result.append(symbol);
         }
-        return result;
+        return result.toString();
     }
     public static String decrypt(String s, int key){
-        String result = "";
+        StringBuilder result=new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             char symbol=s.charAt(i);
             symbol-=key;
-            result+= symbol;
+            result.append(symbol);
         }
-        return result;
+        return result.toString();
     }
 
 
@@ -67,7 +70,7 @@ public class HomeWorkApp {
                 System.out.println("Упрощаем уравнение: 0=0. Эй, куда делись иксы?");
             }
             else{
-                System.out.println("Если а = 0 и b = 0, Вы утверждаете, что "+ c + " = 0. Мне нравится Ваш подход =))");
+                System.out.println("Если а = 0 и b = 0, Вы утверждаете, что "+ c + " = 0 ?  Мне нравится Ваш подход =))");
             }
         }
 

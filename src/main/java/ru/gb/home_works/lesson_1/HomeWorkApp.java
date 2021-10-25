@@ -7,10 +7,7 @@ public class HomeWorkApp {
         printColor();
         compareNumbers();
 
-        if (1!=2){
-
-
-        }
+ 
         quadratic(-2,6,9);                                      //Доп задание из телеги (Квадратное уравнение)
 
         {                                                               //Доп задание из телеги (шифр Цезаря)

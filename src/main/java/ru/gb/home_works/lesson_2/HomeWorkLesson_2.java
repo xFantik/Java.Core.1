@@ -75,7 +75,7 @@ public class HomeWorkLesson_2 {
                 "carrot", "cherry", "garlic", "grape", "melon", "leak", "kiwi", "mango", "mushroom", "nut",
                 "olive", "pea", "peanut", "pear", "pepper", "pineapple", "pumpkin", "potato"};
         String answer = words[(int) (Math.random() * (words.length))];
-        System.out.println("Угадайте слово: " + answer);
+        //System.out.println("Угадайте слово: " + answer);
         Scanner scanner = new Scanner(System.in);
         int attemptCounter = 0;
         while (true) {

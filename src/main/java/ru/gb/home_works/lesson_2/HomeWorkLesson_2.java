@@ -75,7 +75,7 @@ public class HomeWorkLesson_2 {
                 "carrot", "cherry", "garlic", "grape", "melon", "leak", "kiwi", "mango", "mushroom", "nut",
                 "olive", "pea", "peanut", "pear", "pepper", "pineapple", "pumpkin", "potato"};
         String answer = words[(int) (Math.random() * (words.length))];
-        String maskAnswer = getMaskAnswer(answer);
+//        String maskAnswer = getMaskAnswer(answer);
 //        System.out.println(maskAnswer);
         System.out.println("Угадайте слово: " + answer);
         Scanner scanner = new Scanner(System.in);
@@ -90,16 +90,15 @@ public class HomeWorkLesson_2 {
                 break;
             } else {
                 StringBuilder promt = new StringBuilder();
-                int i = 0;
-                for (; i < input.length(); i++) {
-                    if (input.charAt(i) == maskAnswer.charAt(i)) {
-                        promt.append(input.charAt(i));
-                    } else promt.append('#');
+                for (int i = 0; i < 15; i++) {
+                    if (i<input.length() && i<answer.length()){
+                        if (input.charAt(i) == answer.charAt(i)) {
+                            promt.append(input.charAt(i));
+                        } else promt.append('#');
+                    }
+                    else promt.append('#');
                 }
-                for (; i < maskAnswer.length(); i++) {
-                    promt.append('#');
-                }
-                System.out.println("Нет. Угаданные буквы: " + promt.toString());
+                 System.out.println("Нет. Угаданные буквы: " + promt.toString());
             }
         }
     }
@@ -114,11 +113,4 @@ public class HomeWorkLesson_2 {
         } else return "попыток";
     }
 
-    public static String getMaskAnswer(String s) {
-        StringBuilder result = new StringBuilder(s);
-        for (int i = s.length(); i < 15; i++) {
-            result.append("#");
-        }
-        return result.toString();
-    }
 }

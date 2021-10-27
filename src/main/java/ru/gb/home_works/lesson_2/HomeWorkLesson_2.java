@@ -76,13 +76,13 @@ public class HomeWorkLesson_2 {
                 "olive", "pea", "peanut", "pear", "pepper", "pineapple", "pumpkin", "potato"};
         String answer = words[(int) (Math.random() * (words.length))];
         //System.out.println("Угадайте слово: " + answer);
+        System.out.print("\nУгадайте слово: ");
         Scanner scanner = new Scanner(System.in);
         int attemptCounter = 0;
         while (true) {
-            System.out.printf("\nПопытка №%d: ", attemptCounter + 1);
-            String input = scanner.next();
             attemptCounter++;
-
+            System.out.printf("\nПопытка №%d: ", attemptCounter);
+            String input = scanner.next();
             if (input.equals(answer)) {
                 System.out.printf("Ура! Слово угадано за %d %s", attemptCounter, wordHelper(attemptCounter));
                 break;
@@ -95,7 +95,7 @@ public class HomeWorkLesson_2 {
                         } else promt.append('#');
                     } else promt.append('#');
                 }
-                System.out.println("Нет. Угаданные буквы: " + promt.toString());
+                System.out.println("Угаданные буквы: " + promt.toString());
             }
         }
     }

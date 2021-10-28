@@ -26,7 +26,9 @@ public class HomeWorkLesson_3 {
 //7        Написать метод, в который передается не пустой одномерный целочисленный массив,
 //        метод должен вернуть true, если в массиве есть место, в котором сумма левой и правой части массива равны.
         int[] array=new int[]{1,2,3,4,2,0};
-        System.out.println(leftAndRightSum(array));
+
+
+        System.out.println(leftAndRightSum(new int[]{-10,10,0,0,0,0,0}));
 
 
 //8        Написать метод, которому на вход подается одномерный массив и число n (может быть положительным, или отрицательным),
@@ -58,8 +60,8 @@ public class HomeWorkLesson_3 {
     }
 
     public static void leftAndRightSumPrinter(int[] array, int endIndex) {
-        if(array.length==1){
-            System.out.println("В левой части 0, в правой ничего. Считаем, что они равны");
+        if(array.length==endIndex){
+            System.out.println("Сумма всех элементов массива равна 0");
             return;
         }
         StringBuilder result = new StringBuilder();

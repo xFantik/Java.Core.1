@@ -75,16 +75,13 @@ public class HomeWorkLesson_3 {
         shiftArrayWithoutSecondArray(new int[]{1, 2, 3,4,5 }, -201);
 
 
-        //todo:
         int[] testArray=new int[]{1,2,3,4,5,6};
-        int[] testArray2=new int[testArray.length];
-        System.arraycopy(testArray,0, testArray2, 1, testArray.length );
-        arrayPrinter(testArray2);
-
-
+        shiftArrayWithSystemArrayCopy(testArray, -1);
 
 
     }
+
+
     //задание 5
     private static int[] createArray(int len, int initialValue) {
         if (len<=0) return null;
@@ -163,7 +160,16 @@ public class HomeWorkLesson_3 {
         }
         arrayPrinter(array);
     }
-
+////задание 8**
+    private static void shiftArrayWithSystemArrayCopy(int[] testArray, int shift) {
+        while (shift <0) shift += testArray.length;
+        shift %= testArray.length;
+        int[] testArray2=new int[testArray.length];
+        System.arraycopy(testArray,0, testArray2, shift, testArray.length- shift);
+        arrayPrinter(testArray2);
+        System.arraycopy(testArray, testArray.length- shift, testArray2, 0, shift);
+        arrayPrinter(testArray2);
+    }
     public static void arrayPrinter(int[] array) {
         if (array==null) {
             System.out.println("Массив не проинициализирован");

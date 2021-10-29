@@ -5,8 +5,7 @@ public class HomeWorkLesson_3 {
 //1         Задать целочисленный массив, состоящий из элементов 0 и 1. Например: [ 1, 1, 0, 0, 1, 0, 1, 1, 0, 0 ]. С помощью цикла и условия заменить 0 на 1, 1 на 0;
         int[] array = new int[]{1, 1, 0, 0, 1, 0, 1, 1, 0, 0};
         for (int i = 0; i < array.length; i++) {
-            if (array[i] == 0) array[i] = 1;
-            else array[i] = 0;
+            array[i] = array[i]^1;
         }
         System.out.print("Задание 1: ");
         arrayPrinter(array);
@@ -64,7 +63,7 @@ public class HomeWorkLesson_3 {
 //7        Написать метод, в который передается не пустой одномерный целочисленный массив,
 //        метод должен вернуть true, если в массиве есть место, в котором сумма левой и правой части массива равны.
         System.out.print("\nЗадание 7: ");
-        System.out.println(leftAndRightSum(new int[]{ 10,-10, 2, 18,20}));
+        System.out.println(leftAndRightSum(new int[]{-1,-1,-1,-1, 5, 1}));
 
 
 //8        Написать метод, которому на вход подается одномерный массив и число n (может быть положительным, или отрицательным),
@@ -74,6 +73,15 @@ public class HomeWorkLesson_3 {
 //          При каком n в какую сторону сдвиг можете выбирать сами.
         System.out.print("\nЗадание 8: ");
         shiftArrayWithoutSecondArray(new int[]{1, 2, 3,4,5 }, -201);
+
+
+        //todo:
+        int[] testArray=new int[]{1,2,3,4,5,6};
+        int[] testArray2=new int[testArray.length];
+        System.arraycopy(testArray,0, testArray2, 1, testArray.length );
+        arrayPrinter(testArray2);
+
+
 
 
     }

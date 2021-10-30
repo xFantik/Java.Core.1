@@ -16,11 +16,13 @@ public class Field {
     private char botChar = 'X';
     private char userChar = '0';
     private char emptyDot = '.';
-    
-    private int fieldSize;
 
-    public Field(int size) {
+    private int fieldSize;
+    private int winLineLength;
+
+    public Field(int size, int winLineLength) {
         fieldSize = size;
+        this.winLineLength = winLineLength;
         char[][] field = new char[size][size];
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[i].length; j++) {
@@ -55,6 +57,7 @@ public class Field {
                     field[i][j] = botChar;
                     currentState = PLAYER_STEP;
                     waitImitation();
+                    isWin(botChar);
                     return true;
                 }
             }
@@ -78,6 +81,7 @@ public class Field {
                     System.out.println("Поле занято. Повторите попытку");
                     continue;
                 } else {
+                    isWin(userChar);
                     return true;
                 }
             }
@@ -129,48 +133,124 @@ public class Field {
         }
     }
 
+    private int drawLineRow(int i, int j, char symb) {
+        int length = 1;
+        while (j + 1 < field[i].length) {
+            j++;
+            if (field[i][j] == symb) {
+                length++;
+            }
+        }
+//        System.out.println("Длина " + symb + " = " + length);
+        return length;
+    }
+
+    private int drawLineColumn(int i, int j, char symb) {
+        int length = 1;
+        while (i + 1 < field.length) {
+            i++;
+            if (field[i][j] == symb) {
+                length++;
+            }
+        }
+//        System.out.println("Длина " + symb + " = " + length);
+        return length;
+    }
+
+    private int drawLineDiag(int i, int j, char symb) {
+        int length = 1;
+        while (i + 1 < field.length && j + 1 < field[i].length) {
+            i++;
+            j++;
+            if (field[i][j] == symb) {
+                length++;
+            }
+        }
+//        System.out.println("Длина " + symb + " = " + length);
+        return length;
+    }
+
+    private int drawLineBackDiag(int i, int j, char symb) {
+        int length = 1;
+        while (i > 0 && j + 1 < field[i].length) {
+            i--;
+            j++;
+            if (field[i][j] == symb) {
+                length++;
+            }
+        }
+//        System.out.println("Длина " + symb + " = " + length);
+        return length;
+    }
+
+    private boolean isWin(char symb) {
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                if (field[i][j] == symb) {
+                    int t = drawLineRow(i, j, symb);
+                    if (t >= winLineLength) return true;
+                    t = drawLineColumn(i, j, symb);
+                    if (t >= winLineLength) return true;
+                    t = drawLineDiag(i, j, symb);
+                    if (t >= winLineLength) return true;
+                    t = drawLineBackDiag(i, j, symb);
+                    if (t >= winLineLength) return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     public boolean isWin() {
-        if (isWinColumn() || isWinRow() || isWinDiagonal())
+        if (isWin(botChar)) {
+            currentState = botWin;
             return true;
-        return false;
-    }
-
-    private boolean isWinRow() {
-        for (int x = 0; x < field.length; x++) {
-            if ((field[x][0] == field[x][1] && field[x][2] == field[x][1]) && field[x][0] != emptyDot) {
-                if (field[x][0] == botChar)
-                    currentState = botWin;
-                else
-                    currentState = playerWin;
-                return true;
-            }
         }
-        return false;
-    }
-
-    private boolean isWinColumn() {
-        for (int x = 0; x < field.length; x++) {
-            if ((field[0][x] == field[1][x] && field[2][x] == field[1][x]) && field[0][x] != emptyDot) {
-                if (field[0][x] == botChar)
-                    currentState = botWin;
-                else
-                    currentState = playerWin;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isWinDiagonal() {
-        if (((field[0][0] == field[1][1] && field[2][2] == field[1][1]) || field[2][0] == field[1][1] && field[0][2] == field[1][1]) && field[1][1] != emptyDot) {
-            if (field[1][1] == botChar)
-                currentState = botWin;
-            else
-                currentState = playerWin;
+        if (isWin(userChar)) {
+            currentState = playerWin;
             return true;
         }
         return false;
     }
+
+//    private boolean isWinRow() {
+//        for (int x = 0; x < field.length; x++) {
+//            if ((field[x][0] == field[x][1] && field[x][2] == field[x][1]) && field[x][0] != emptyDot) {
+//                if (field[x][0] == botChar)
+//                    currentState = botWin;
+//                else
+//                    currentState = playerWin;
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private boolean isWinColumn() {
+//        for (int x = 0; x < field.length; x++) {
+//            if ((field[0][x] == field[1][x] && field[2][x] == field[1][x]) && field[0][x] != emptyDot) {
+//                if (field[0][x] == botChar)
+//                    currentState = botWin;
+//                else
+//                    currentState = playerWin;
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private boolean isWinDiagonal() {
+//        if (((field[0][0] == field[1][1] && field[2][2] == field[1][1]) || field[2][0] == field[1][1] && field[0][2] == field[1][1]) && field[1][1] != emptyDot) {
+//            if (field[1][1] == botChar)
+//                currentState = botWin;
+//            else
+//                currentState = playerWin;
+//            return true;
+//        }
+//        return false;
+//    }
+
     public int getCurrentState() {
         return currentState;
     }

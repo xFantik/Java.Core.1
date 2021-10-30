@@ -64,7 +64,7 @@ public class Field {
 
                 if (doStep(nextBotStep[0], nextBotStep[1], botChar)) {
                     waitImitation();
-                    System.out.println((nextBotStep[0] + 1) + " " + (nextBotStep[1] + 1));
+                    System.out.print((nextBotStep[0] + 1) + " " + (nextBotStep[1] + 1));
                     return true;
                 }
             }
@@ -74,7 +74,7 @@ public class Field {
                 System.out.print("Ваш ход:");
                 int x = scanner.nextInt();
                 int y;
-                if (x >= 10) {
+                if (fieldSize<10 && x >= 10) {
                     y = x % 10;
                     x /= 10;
                 } else
@@ -82,7 +82,7 @@ public class Field {
                 x--;
                 y--;
                 if (x >= fieldSize || y >= fieldSize || y < 0 || x < 0) {
-                    System.out.printf("Мимо поля. Допустимые значени координат от 1 до %d. Повторите попытку.", fieldSize);
+                    System.out.printf("Мимо поля. Допустимые значени координат от 1 до %d. Повторите попытку.\n", fieldSize);
                     continue;
                 } else if (!doStep(x, y, userChar)) {
                     System.out.println("Поле занято. Повторите попытку");

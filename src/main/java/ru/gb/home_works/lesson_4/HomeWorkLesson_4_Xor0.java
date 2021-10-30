@@ -4,7 +4,7 @@ public class HomeWorkLesson_4_Xor0 {
     static Field field;
 
     public static void main(String[] args) {
-        field = new Field(3,3);
+        field = new Field(5,4);
         System.out.println(field);
         while (field.doStep()) {
             System.out.println(field);

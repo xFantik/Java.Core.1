@@ -127,7 +127,6 @@ public class Field {
                     if (j == fieldSize - 2) {
                         allPossibleStepsBuffer[tmp][2] -= 25;
                     }
-
                     tmp++;
                 }
             }
@@ -136,27 +135,31 @@ public class Field {
         System.arraycopy(allPossibleStepsBuffer, 0, allPossibleSteps, 0, allPossibleSteps.length);
         allPossibleStepsBuffer = null;
 
-//        System.out.println("Все возможные ходы:");
-//        for (int i = 0; i < allPossibleSteps.length; i++) {
-//            System.out.println("x,y: "+allPossibleSteps[i][0]+" " +allPossibleSteps[i][1]+" вес:" + allPossibleSteps[i][2]);
-//        }
-//        sortPossibleSteps(allPossibleSteps);
-//        for (int i = 0; i < allPossibleSteps.length; i++) {
-//            System.out.println("x,y: "+allPossibleSteps[i][0]+" " +allPossibleSteps[i][1]+" вес:" + allPossibleSteps[i][2]);
-//        }
 
 
-        char[][] virtualField = new char[fieldSize][fieldSize];         //Виртуальное поле для рассмотрения ходов
 
-        for (int i = 0; i < allPossibleSteps.length; i++) {
+        char[][] virtualField = new char[fieldSize][fieldSize];                     //Виртуальное поле для рассмотрения ходов
+
+        for (int i = 0; i < allPossibleSteps.length; i++) {                         //Поиск лучшего хода
             for (int j = 0; j < virtualField.length; j++) {
                 System.arraycopy(field[j], 0, virtualField[j], 0, field[j].length);
             }
             virtualField[allPossibleSteps[i][0]][allPossibleSteps[i][1]] = botChar;
             Field virtField = new Field(virtualField, fieldSize, winLineLength);
-            allPossibleSteps[i][2] += virtField.calculateWidth();
+            allPossibleSteps[i][2] += virtField.calculateWidth(botChar);
         }
-        int sameStepNumber = sortPossibleSteps(allPossibleSteps);
+
+        for (int i = 0; i < allPossibleSteps.length; i++) {                             //Поиск лучшего хода противника для блокировки
+            for (int j = 0; j < virtualField.length; j++) {
+                System.arraycopy(field[j], 0, virtualField[j], 0, field[j].length);
+            }
+            virtualField[allPossibleSteps[i][0]][allPossibleSteps[i][1]] = userChar;
+            Field virtField = new Field(virtualField, fieldSize, winLineLength);
+            allPossibleSteps[i][2] += (virtField.calculateWidth(userChar)/3);
+        }
+
+
+        int sameStepNumber = sortPossibleSteps(allPossibleSteps);                       //сортировка
 
 //        for (int i = 0; i < allPossibleSteps.length; i++) {
 //            System.out.println("x,y: " + (allPossibleSteps[i][0] + 1) + " " + (1 + allPossibleSteps[i][1]) + " вес:" + allPossibleSteps[i][2]);
@@ -165,48 +168,12 @@ public class Field {
         int index = new Random().nextInt(sameStepNumber);
         nextBotStep[0] = allPossibleSteps[index][0];
         nextBotStep[1] = allPossibleSteps[index][1];
-//        Random random = new Random();
-//        nextBotStep[0] = random.nextInt(fieldSize);
-//        nextBotStep[1] = random.nextInt(fieldSize);
-
-
-//        for (int i = 0; i < field.length; i++) {
-//            for (int j = 0; j < field[i].length; j++) {
-//                if (field[i][j] == botChar) {
-//                    int t = drawLineRow(i, j, botChar);
-//                    if (t >= winLineLength - 1) {
-//                        if (tryAddLineRow(i, j, t, nextBotStep))
-//                            System.out.println("Так решил алгоритм поиска выигрыша: " + nextBotStep[0] + " " + nextBotStep[1]);
-//                        continue;
-//
-//                    }
-//                    t = drawLineColumn(i, j, botChar);
-//                    if (t >= winLineLength - 1) {
-//                        if (tryAddLineColumn(i, j, t, nextBotStep))
-//                            System.out.println("Так решил алгоритм поиска выигрыша: " + nextBotStep[0] + " " + nextBotStep[1]);
-//                        continue;
-//                    }
-//                    t = drawLineDiag(i, j, botChar);
-//                    if (t >= winLineLength - 1) {
-//                        if (tryAddLineDiag(i, j, t, nextBotStep))
-//                            System.out.println("Так решил алгоритм поиска выигрыша: " + nextBotStep[0] + " " + nextBotStep[1]);
-//                        continue;
-//                    }
-//                    t = drawLineBackDiag(i, j, botChar);
-//                    if (t >= winLineLength - 1) {
-//                        if (tryAddLineBackDiag(i, j, t, nextBotStep))
-//                            System.out.println("Так решил алгоритм поиска выигрыша: " + nextBotStep[0] + " " + nextBotStep[1]);
-//                        continue;
-//                    }
-//                }
-//            }
-//        }
 
     }
 
-    private int calculateWidth() {
+    private int calculateWidth(char symb) {
         int result = 0;
-        char symb = botChar;
+
         for (int i = 0; i < field.length; i++) {                                    //проверяем полезность хода (длины линий после простановки)
             for (int j = 0; j < field[i].length; j++) {
                 if (field[i][j] == symb) {
@@ -214,17 +181,17 @@ public class Field {
                     if (tempLineLength >= winLineLength) {
                         result += 1000000;
                     } else if (tempLineLength >= winLineLength - 1) {
-                        result = tryAddLineRow(i, j, tempLineLength) * 10000;
+                        result += tryAddLineRow(i, j, tempLineLength) * 10000;
                     } else if (tempLineLength >= winLineLength - 2) {
-                        result += tryAddLineRow(i, j, tempLineLength) * 2000;
+                        result += tryAddLineRow(i, j, tempLineLength) * 4000;
                     }
                     tempLineLength = drawLineColumn(i, j, symb);
                     if (tempLineLength >= winLineLength) {
                         result += 1000000;
                     } else if (tempLineLength >= winLineLength - 1) {
-                        result = tryAddLineColumn(i, j, tempLineLength) * 10000;
+                        result += tryAddLineColumn(i, j, tempLineLength) * 10000;
                     } else if (tempLineLength >= winLineLength - 2) {
-                        result += tryAddLineColumn(i, j, tempLineLength) * 2000;
+                        result += tryAddLineColumn(i, j, tempLineLength) * 4000;
                     }
                     tempLineLength = drawLineDiag(i, j, symb);
                     if (tempLineLength >= winLineLength) {
@@ -233,7 +200,7 @@ public class Field {
                         result += tryAddLineDiag(i, j, tempLineLength) * 10000;
 
                     } else if (tempLineLength >= winLineLength - 2) {
-                        result += tryAddLineDiag(i, j, tempLineLength) * 2000;
+                        result += tryAddLineDiag(i, j, tempLineLength) * 4000;
                     }
                     tempLineLength = drawLineBackDiag(i, j, symb);
                     if (tempLineLength >= winLineLength) {
@@ -241,51 +208,50 @@ public class Field {
                     } else if (tempLineLength >= winLineLength - 1) {
                         result += tryAddLineBackDiag(i, j, tempLineLength) * 10000;
                     } else if (tempLineLength >= winLineLength - 2) {
-                        result += tryAddLineBackDiag(i, j, tempLineLength) * 2000;
-
+                        result += tryAddLineBackDiag(i, j, tempLineLength) * 4000;
                     }
                 }
             }
         }
-        symb = userChar;
-        for (int i = 0; i < field.length; i++) {                                        //проверяем расклад для противника
-            for (int j = 0; j < field[i].length; j++) {
-                if (field[i][j] == symb) {
-                    int tempLineLength = drawLineRow(i, j, symb);
-                    if (tempLineLength >= winLineLength - 1) {
-                        result-=tryAddLineRow(i, j, tempLineLength)* 100000;
-
-                    } else if (tempLineLength >= winLineLength - 2) {
-                        result-=tryAddLineRow(i, j, tempLineLength)* 60000;
-
-                    }
-                    tempLineLength = drawLineColumn(i, j, symb);
-                    if (tempLineLength >= winLineLength - 1) {
-                        result-=tryAddLineColumn(i, j, tempLineLength)* 100000;
-
-                    } else if (tempLineLength >= winLineLength - 2) {
-                        result-=tryAddLineColumn(i, j, tempLineLength)* 60000;
-
-                    }
-                    tempLineLength = drawLineDiag(i, j, symb);
-                    if (tempLineLength >= winLineLength - 1) {
-                        result-=tryAddLineDiag(i, j, tempLineLength)* 100000;
-
-                    } else if (tempLineLength >= winLineLength - 2) {
-                        result-=tryAddLineDiag(i, j, tempLineLength)* 60000;
-
-                    }
-                    tempLineLength = drawLineBackDiag(i, j, symb);
-                    if (tempLineLength >= winLineLength - 1) {
-                        result-=tryAddLineBackDiag(i, j, tempLineLength)* 100000;
-
-                    } else if (tempLineLength >= winLineLength - 2) {
-                        result-=tryAddLineBackDiag(i, j, tempLineLength)* 60000;
-
-                    }
-                }
-            }
-        }
+//        symb = userChar;
+//        for (int i = 0; i < field.length; i++) {                                            //проверяем расклад для противника
+//            for (int j = 0; j < field[i].length; j++) {
+//                if (field[i][j] == symb) {
+//                    int tempLineLength = drawLineRow(i, j, symb);
+//                    if (tempLineLength >= winLineLength - 1) {
+//                        result-= tryAddLineRow(i, j, tempLineLength)*300000;
+//
+//                    } else if (tempLineLength >= winLineLength - 2) {
+//                        result-=tryAddLineRow(i, j, tempLineLength)* 100000;
+//
+//                    }
+//                    tempLineLength = drawLineColumn(i, j, symb);
+//                    if (tempLineLength >= winLineLength - 1) {
+//                        result-= tryAddLineColumn(i, j, tempLineLength)*300000;
+//
+//                    } else if (tempLineLength >= winLineLength - 2) {
+//                        result-=tryAddLineColumn(i, j, tempLineLength)* 100000;
+//
+//                    }
+//                    tempLineLength = drawLineDiag(i, j, symb);
+//                    if (tempLineLength >= winLineLength - 1) {
+//                        result-=tryAddLineDiag(i, j, tempLineLength)*300000;
+//
+//                    } else if (tempLineLength >= winLineLength - 2) {
+//                        result-=tryAddLineDiag(i, j, tempLineLength)* 100000;
+//
+//                    }
+//                    tempLineLength = drawLineBackDiag(i, j, symb);
+//                    if (tempLineLength >= winLineLength - 1) {
+//                        result-=tryAddLineBackDiag(i, j, tempLineLength)*300000;
+//
+//                    } else if (tempLineLength >= winLineLength - 2) {
+//                        result-=tryAddLineBackDiag(i, j, tempLineLength)* 100000;
+//
+//                    }
+//                }
+//            }
+//        }
         return result;
     }
 
@@ -534,16 +500,16 @@ public class Field {
 
     private int tryAddLineBackDiag(int i, int j, int currentLength) {
         int result = 0;
-        if (j + currentLength < field[i].length && i > 0) {
+        if (j + currentLength < field[i].length && i -currentLength > 0) {
             j += currentLength;
-            i--;
+            i -= currentLength;
             if (field[i][j] == emptyDot) {
                 result++;
             }
         }
-        if (j > 0 && i + currentLength < field.length) {
+        if (j > 0 && i+1 < field.length) {
             j--;
-            i += currentLength;
+            i++;
             if (field[i][j] == emptyDot) {
                 result++;
             }

@@ -12,15 +12,11 @@ public class HomeWorkLesson_4_Xor0 {
                 break;
         }
         switch (field.getCurrentState()) {
-            case Field.STANDOFF:
-                System.out.println("Клетки закончились. Ничья!");
-                break;
-            case Field.botWin:
-                System.out.println("Ха! Я победил!");
-                break;
-            case Field.playerWin:
-                System.out.println("Мои поздравления! Ты выиграл!");
+            case Field.STANDOFF -> System.out.println("Клетки закончились. Ничья!");
+            case Field.botWin -> System.out.println("Ха! Я победил!");
+            case Field.playerWin -> System.out.println("Мои поздравления! Ты выиграл!");
         }
+        System.out.println("Спасибо за игру!");
     }
 }
 

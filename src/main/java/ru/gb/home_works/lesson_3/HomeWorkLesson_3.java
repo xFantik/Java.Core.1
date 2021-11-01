@@ -2,6 +2,8 @@ package ru.gb.home_works.lesson_3;
 
 public class HomeWorkLesson_3 {
     public static void main(String[] args) {
+
+
 //1         Задать целочисленный массив, состоящий из элементов 0 и 1. Например: [ 1, 1, 0, 0, 1, 0, 1, 1, 0, 0 ]. С помощью цикла и условия заменить 0 на 1, 1 на 0;
         int[] array = new int[]{1, 1, 0, 0, 1, 0, 1, 1, 0, 0};
         for (int i = 0; i < array.length; i++) {
@@ -79,6 +81,14 @@ public class HomeWorkLesson_3 {
         shiftArrayWithSystemArrayCopy(testArray, -1);
 
 
+        shiftOptimal(new int[]{1,2,3,4}, 2);
+
+
+
+
+
+
+
     }
 
 
@@ -136,6 +146,25 @@ public class HomeWorkLesson_3 {
             }
         }
         System.out.println(result);
+    }
+
+    public static void shiftOptimal(int[] arr, int n) {
+        if (arr == null || arr.length < 2) return;
+        int shift = (arr.length + n % arr.length) % arr.length;
+        int count = 0;
+        for (int i = 0; count < arr.length; i++) {
+            int currentIndex = i;
+            int prevElement = arr[i];
+            do {
+                int nextElement = (currentIndex + shift) % arr.length;
+                int temp = arr[nextElement];
+                arr[nextElement] = prevElement;
+                prevElement = temp;
+                currentIndex = nextElement;
+                count++;
+            } while (i != currentIndex);
+        }
+        arrayPrinter(arr);
     }
     //задание 8
     private static void shiftArray(int[] array, int shift) {

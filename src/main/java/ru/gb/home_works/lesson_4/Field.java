@@ -340,7 +340,12 @@ public class Field {
     @Override
     public String toString() { //метод печать поля
         StringBuilder result = new StringBuilder();
-        result.append("\nx\n");
+        result.append('\n');
+        if (fieldSize>9)
+            result.append(" ");
+        result.append("x\n");
+        if (fieldSize>9)
+            result.append(' ');
         result.append((char) 8595);
         result.append("  ");
         for (int i = 0; i < field.length; i++) {
@@ -350,6 +355,8 @@ public class Field {
         result.append((char) (8592));
         result.append("y\n");
         for (int i = 0; i < field.length; i++) {
+            if (fieldSize>9&& i<9)
+                result.append(' ');
             result.append(i + 1).append("  ");
             for (int j = 0; j < field[i].length; j++) {
                 result.append(field[i][j]).append(" ");

@@ -54,14 +54,14 @@ public class Field {
         if (currentState == BOT_STEP) {                                                             //ходит бот
             System.out.print("Мой ход");
             int[] nextBotStep = new int[2];
-            while (true) {
-                calculateStep(nextBotStep);                                                         //вычисление лучшего хода
-                if (doStep(nextBotStep[0], nextBotStep[1], botChar)) {
-                    waitImitation();                                                                 //имитация раздумий =))
-                    System.out.print((nextBotStep[0] + 1) + " " + (nextBotStep[1] + 1));
-                    return true;
-                }
-            }
+
+            calculateStep(nextBotStep);                                                         //вычисление лучшего хода
+            doStep(nextBotStep[0], nextBotStep[1], botChar);
+            waitImitation();                                                                 //имитация раздумий =))
+            System.out.print((nextBotStep[0] + 1) + " " + (nextBotStep[1] + 1));
+            return true;
+
+
         } else {                                                                                   //Ходит человек
             Scanner scanner = new Scanner(System.in);
             while (true) {
@@ -98,7 +98,7 @@ public class Field {
     private void calculateStep(int[] nextBotStep) {                                 //Вычисление лучшего хода
 
         int[][] allPossibleSteps = getAllPossibleSteps();                           //   Получение массива всех пустых клеток
-                                                                                    //    {координата Х, координата У, "вес" хода (считается далее)}
+        //    {координата Х, координата У, "вес" хода (считается далее)}
 
         for (int i = 0; i < lines.size(); i++) {                                    //  Анализ всех линий
             Line l = lines.get(i);
@@ -269,9 +269,9 @@ public class Field {
                 i--;
             }
         }
-        if (lines.size()==0){                                                   // если возможных для победы линий не осталось
-            currentState=STANDOFF;                                              //              статус игры - "ничья"
-            gameOverFlag=true;
+        if (lines.size() == 0) {                                                   // если возможных для победы линий не осталось
+            currentState = STANDOFF;                                              //              статус игры - "ничья"
+            gameOverFlag = true;
         }
         return gameOverFlag;
     }
@@ -341,10 +341,10 @@ public class Field {
     public String toString() { //метод печать поля
         StringBuilder result = new StringBuilder();
         result.append('\n');
-        if (fieldSize>9)
+        if (fieldSize > 9)
             result.append(" ");
         result.append("x\n");
-        if (fieldSize>9)
+        if (fieldSize > 9)
             result.append(' ');
         result.append((char) 8595);
         result.append("  ");
@@ -355,7 +355,7 @@ public class Field {
         result.append((char) (8592));
         result.append("y\n");
         for (int i = 0; i < field.length; i++) {
-            if (fieldSize>9&& i<9)
+            if (fieldSize > 9 && i < 9)
                 result.append(' ');
             result.append(i + 1).append("  ");
             for (int j = 0; j < field[i].length; j++) {

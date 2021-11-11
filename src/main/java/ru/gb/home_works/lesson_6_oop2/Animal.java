@@ -1,26 +1,12 @@
 package ru.gb.home_works.lesson_6_oop2;
 
-public class Animal {
+public abstract class Animal {
     private static int quantity = 0;
-    String name;
+    protected String name;
 
-    public Animal() {
-        quantity++;
-    }
+    public abstract void swim(int distance);
 
-    public Animal(String name) {
-        this();
-        this.name = name;
-    }
-
-    public void animalInfo() {
-        System.out.println("Животное: " + name);
-    }
-
-    public void swim(int distance){
-        System.out.println("Животное проплыло расстояние: " + distance);
-    }
-    public void run(int distance){
+    public void run(int distance) {
         System.out.println("Животное пробежало расстояние: " + distance);
     }
 
@@ -30,5 +16,9 @@ public class Animal {
 
     public static int getQuantity() {
         return quantity;
+    }
+
+    public static void incrementQuantity() {
+        quantity++;
     }
 }

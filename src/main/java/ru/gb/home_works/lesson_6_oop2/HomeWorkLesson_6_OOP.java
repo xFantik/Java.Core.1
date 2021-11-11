@@ -13,18 +13,15 @@ public class HomeWorkLesson_6_OOP {
 
 
     public static void main(String[] args) {
-        new Animal("Змея").run(1000);
+
         new Cat("Барсик").run(100);
         new Cat("Мурзик").run(1000);
         new Cat("Мурзик").swim(1000);
         new Dog("Бобик").swim(7);
         new Dog("Бобик").jump();
-        new Animal("ВторойБобик").run(1000);
         System.out.println("Создано животных: " + Animal.getQuantity());
         System.out.println("Из них кошек: " + Cat.getQuantity());
         System.out.println("Из них собак: " + Dog.getQuantity());
-
-
 
     }
 }

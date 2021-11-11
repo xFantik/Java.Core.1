@@ -6,6 +6,7 @@ public class Dog extends Animal {
     public Dog(String name) {
         this.name = name;
         quantity++;
+        incrementQuantity();
     }
 
     @Override
@@ -19,7 +20,7 @@ public class Dog extends Animal {
     @Override
     public void run(int distance) {
         if (distance <= 500) {
-            System.out.printf("Dog %s пробежал(а) расстояние: %d\n", name, distance);
+            super.run(distance);
         } else
             System.out.printf("Dog %s сказал(а): Так далеко я не побегу\n", name);
     }

@@ -15,7 +15,7 @@ public class HomeWorkLesson7 {
                 new Cat("Танк", 70),
                 new Cat("Мустанг", 40)
         };
-        Plate plate = new Plate(100);
+        Plate plate = new Plate(150,100);
 
         for (int i = 0; i < cats.length; i++) {
             if (!cats[i].eat(plate)){               // если котик не смог поесть
@@ -23,7 +23,7 @@ public class HomeWorkLesson7 {
                 i--;                                // уменьшим индекс, чтобы котик поел еще раз
             }
         }
-
         cats[2].eat(plate);                         //Попытка накормить только что поевшего кота:
+        plate.addFood(200);                         //Попытка насыпать много еды
     }
 }

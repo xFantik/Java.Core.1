@@ -89,7 +89,6 @@ public class MyGameWindow extends JFrame {
         field.doStep();
         drawField();
         if (field.isGameOver()) {
-
             drawResult();
         }
     }
@@ -118,6 +117,7 @@ public class MyGameWindow extends JFrame {
                     buttons[i][j].setIcon(image_Blank);
                 if (field.isWinDot(i,j))
                     buttons[i][j].setBackground(new Color(111111));
+                else buttons[i][j].setBackground(null);
             }
         }
 

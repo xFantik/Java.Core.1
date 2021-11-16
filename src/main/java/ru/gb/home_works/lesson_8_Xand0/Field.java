@@ -21,6 +21,8 @@ public class Field {
     private final char userChar = '0';
     private final char emptyDot = '∙';
 
+    private Line winLine;
+
 
     public Field(int sizeX, int sizeY, int winLineLength) {
         fieldSizeX = sizeX;
@@ -45,7 +47,9 @@ public class Field {
             }
         }
         this.field = field;
+        winLine=null;
         createLines();
+
     }
 
 
@@ -269,6 +273,16 @@ public class Field {
 //        }
     }
 
+    public boolean isWinDot(int i, int j){
+        if (winLine==null) return false;
+        for (int k = 0; k < winLine.dotes.length; k++) {
+            if (i==winLine.dotes[k][0]&&j==winLine.dotes[k][1]){
+                return true;
+            }
+        }
+        return false;
+    }
+
     private class Line {
 
         public static final int EMPTY_LINE = 0;                             //  пустая линия
@@ -285,8 +299,14 @@ public class Field {
             int counterBotChars = getLineChars(botChar);
             int counterEmptyDots = getLineChars(emptyDot);
 
-            if (counterBotChars == winLineLength) return botWin;
-            if (counterUserChars == winLineLength) return playerWin;
+            if (counterBotChars == winLineLength) {
+                winLine = this;
+                return botWin;
+            }
+            if (counterUserChars == winLineLength) {
+                winLine = this;
+                return playerWin;
+            }
             if (counterEmptyDots == winLineLength) return EMPTY_LINE;
             if (counterBotChars > 0 && counterUserChars > 0) return STANDOFF;
             if (counterBotChars > 0 && counterUserChars == 0) return BOT_LINE;

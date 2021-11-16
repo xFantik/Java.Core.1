@@ -54,7 +54,7 @@ public class MyGameWindow extends JFrame {
         fieldChars = field.field;
         drawField();
         if (field.getCurrentState() == Field.BOT_STEP) {
-            JOptionPane.showMessageDialog(null, "Мой ход!");
+            JOptionPane.showMessageDialog(null, "Не против, если я буду ходить первым?");
             field.doStep();
         } else
             JOptionPane.showMessageDialog(null, "Ходи первый!");
@@ -89,11 +89,13 @@ public class MyGameWindow extends JFrame {
         field.doStep();
         drawField();
         if (field.isGameOver()) {
+
             drawResult();
         }
     }
 
     private void drawResult() {
+        drawField();
         switch (field.getCurrentState()) {
             case Field.STANDOFF -> JOptionPane.showMessageDialog(null, "\"Больше линий здесь не нарисовать! Ничья!\"");
             case Field.botWin -> JOptionPane.showMessageDialog(null, "\"ХА! Комп Победил!\"");
@@ -109,10 +111,13 @@ public class MyGameWindow extends JFrame {
             for (int j = 0; j < fieldChars[i].length; j++) {
                 if (fieldChars[i][j] == '0')
                     buttons[i][j].setIcon(image_0);
-                else if (fieldChars[i][j] == 'X')
+                else if (fieldChars[i][j] == 'X'){
                     buttons[i][j].setIcon(image_X);
+                }
                 else
                     buttons[i][j].setIcon(image_Blank);
+                if (field.isWinDot(i,j))
+                    buttons[i][j].setBackground(new Color(111111));
             }
         }
 

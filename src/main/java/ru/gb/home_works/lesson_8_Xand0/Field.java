@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Field {
     private ArrayList<Line> lines;                                     //массив всех возможных линий
-    public char[][] field;                                             //игровое поле
+    private char[][] field;                                             //игровое поле
     private int currentState;                                       // статус игры (чей ход, чья победа, ничья)
     private final int fieldSizeX;
     private final int fieldSizeY;
@@ -54,6 +54,15 @@ public class Field {
         whoIsFirstPlayer();
     }
 
+    public int getArrayLength(int i){
+        return field[i].length;
+    }
+    public int getArrayLength(){
+        return field.length;
+    }
+    public char getArraySymbol(int i, int j){
+        return field[i][j];
+    }
 
     public void doStep() {
         if (!hasEmptySlot()) {

@@ -6,15 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MyGameWindow extends JFrame {
-    private final int button_down_height = 40;
     private ImageIcon image_X;
     private ImageIcon image_0;
     private ImageIcon image_Blank;
     int elementSize = 50;
     private final int size_X = 30;
-    private final int size_Y = 10;
+    private final int size_Y = 15;
     int winLineLength = 5;
-    char[][] fieldChars;
     JButton[][] buttons;
     JPanel jPanel;
     Field field;
@@ -25,14 +23,13 @@ public class MyGameWindow extends JFrame {
 
     public MyGameWindow() {
         field = new Field(size_X, size_Y, winLineLength);
-        fieldChars = field.field;
         setTitle("Крестики-нолики");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-        setBounds(300, 300, elementSize * size_X, elementSize * size_Y + button_down_height);
+        setBounds(200, 200, elementSize * size_X, elementSize * size_Y);
 
-        image_0 = new ImageIcon("src/images/dog.png");
-        image_X = new ImageIcon("src/images/cat.png");
+        image_0 = new ImageIcon("src/images/smile3.png");
+        image_X = new ImageIcon("src/images/smile4.png");
         image_Blank = new ImageIcon("src/images/blank.png");
         jPanel = new JPanel();
         createJButtonsField(jPanel);
@@ -41,12 +38,20 @@ public class MyGameWindow extends JFrame {
 
         JMenuBar menuBar = new JMenuBar();
 
+        JMenu new_game_menu = new JMenu("Новая игра");
+        JMenuItem new_game = new JMenuItem("Новая игра");
         JMenu select_images = new JMenu("Images");
         JMenuItem exitItem = new JMenuItem("Exit");
 
         exitItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
+            }
+        });
+        new_game.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                newGame();
+                drawField();
             }
         });
 
@@ -71,8 +76,8 @@ public class MyGameWindow extends JFrame {
         JMenuItem bugs = new JMenuItem("Жуки");
         bugs.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                image_X = new ImageIcon("src/images/smile3.png");
-                image_0 = new ImageIcon("src/images/smile4.png");
+                image_X = new ImageIcon("src/images/smile4.png");
+                image_0 = new ImageIcon("src/images/smile3.png");
                 drawField();
             }
         });
@@ -83,6 +88,10 @@ public class MyGameWindow extends JFrame {
         select_images.add(bugs);
 
 
+        exitItem.setMaximumSize(new Dimension(100,100));
+
+        new_game_menu.add(new_game);
+        menuBar.add(new_game_menu);
         menuBar.add(select_images);
         menuBar.add(exitItem);
         setJMenuBar(menuBar);
@@ -96,10 +105,6 @@ public class MyGameWindow extends JFrame {
 
 
     public void drawField() {
-        JButton buttonUp = new JButton("Новая игра");
-        buttonUp.setBounds(0, 0, elementSize * size_Y, button_down_height);
-        buttonUp.addActionListener(actionEvent -> newGame());
-        add(buttonUp, BorderLayout.SOUTH);
         getPlayingField(jPanel);
         add(jPanel);
         setVisible(true);
@@ -107,7 +112,6 @@ public class MyGameWindow extends JFrame {
 
     private void newGame() {
         field.clear();
-        fieldChars = field.field;
         drawField();
         if (field.getCurrentState() == Field.BOT_STEP) {
             JOptionPane.showMessageDialog(null, "Не против, если я буду ходить первым?");
@@ -163,11 +167,11 @@ public class MyGameWindow extends JFrame {
 
     private void getPlayingField(JPanel component) {
         component.setLayout(new GridLayout(size_Y, size_X));
-        for (int i = 0; i < fieldChars.length; i++) {
-            for (int j = 0; j < fieldChars[i].length; j++) {
-                if (fieldChars[i][j] == '0')
+        for (int i = 0; i < field.getArrayLength(); i++) {
+            for (int j = 0; j < field.getArrayLength(i); j++) {
+                if (field.getArraySymbol(i,j) == '0')
                     buttons[i][j].setIcon(image_0);
-                else if (fieldChars[i][j] == 'X'){
+                else if (field.getArraySymbol(i,j) == 'X'){
                     buttons[i][j].setIcon(image_X);
                 }
                 else

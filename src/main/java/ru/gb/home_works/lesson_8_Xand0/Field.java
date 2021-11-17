@@ -28,16 +28,18 @@ public class Field {
         fieldSizeX = sizeX;
         fieldSizeY = sizeY;
         this.winLineLength = winLineLength;
-        clear();                                    //разбиваем поле на все возможные линии
-        System.out.println();
+        clear();
+        whoIsFirstPlayer();
+    }
+
+    private void whoIsFirstPlayer() {
         if (new Random().nextInt(2) == 0) {
-//            System.out.println("Я хожу первый!");
             currentState = BOT_STEP;
         } else {
-//            System.out.println("Начинай игру");
             currentState = PLAYER_STEP;
         }
     }
+
 
     public void clear() {
         char[][] field = new char[fieldSizeY][fieldSizeX];
@@ -49,7 +51,7 @@ public class Field {
         this.field = field;
         winLine=null;
         createLines();
-
+        whoIsFirstPlayer();
     }
 
 

@@ -76,7 +76,11 @@ public class Field {
     }
 
     public boolean doStep(int x, int y) {
-        return doStep(x, y, userChar);
+        if (currentState==BOT_STEP)
+            return doStep(x, y, botChar);
+
+        else
+             return doStep(x, y, userChar);
     }
 
     public boolean doStep(int x, int y, char symbol) {

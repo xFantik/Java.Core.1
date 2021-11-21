@@ -40,6 +40,7 @@ public class MyGameWindow extends JFrame {
 
 //        newGame();
 //        drawField();
+        add(gameFieldPanel);
 
         setVisible(true);
         new SettingWindow();
@@ -88,15 +89,16 @@ public class MyGameWindow extends JFrame {
             size_Y = temp_sizeY;
             size_X = temp_sizeX;
             winLineLength = temp_winLineLength;
-            newGame();
             setVisible(false);
+            newGame();
+
         }
 
         private void addGameSize() {
             labelFieldSize = new JLabel();
             labelWinLength = new JLabel();
             updateTextElements();
-            JSlider sliderFieldWidth = new JSlider(3, 40, temp_sizeX);
+            JSlider sliderFieldWidth = new JSlider(3, 35, temp_sizeX);
             sliderFieldWidth.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent e) {
@@ -141,9 +143,11 @@ public class MyGameWindow extends JFrame {
             gameMode.add(humanVsAi);
             gameMode.add(humanVsHuman);
 
+
             add(labelMode);
             add(humanVsAi);
             add(humanVsHuman);
+
 
         }
 
@@ -167,7 +171,6 @@ public class MyGameWindow extends JFrame {
         new_game.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 newGame();
-                drawField();
             }
         });
         settings.addActionListener(new ActionListener() {
@@ -182,7 +185,7 @@ public class MyGameWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 image_0 = new ImageIcon("src/images/dog.png");
                 image_X = new ImageIcon("src/images/cat.png");
-                drawField();
+                drawField(true);
             }
         });
 
@@ -191,7 +194,7 @@ public class MyGameWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 image_X = new ImageIcon("src/images/smile1.png");
                 image_0 = new ImageIcon("src/images/smile2.png");
-                drawField();
+                drawField(true);
             }
         });
         JMenuItem bugs = new JMenuItem("Жуки");
@@ -199,7 +202,7 @@ public class MyGameWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 image_X = new ImageIcon("src/images/smile4.png");
                 image_0 = new ImageIcon("src/images/smile3.png");
-                drawField();
+                drawField(true);
             }
         });
 
@@ -219,11 +222,32 @@ public class MyGameWindow extends JFrame {
         setJMenuBar(menuBar);
     }
 
+    private void updateDot(int i, int j){
+        if (field.getArraySymbol(i, j) == '0')
+            buttons[i][j].setIcon(image_0);
+        else if (field.getArraySymbol(i, j) == 'X') {
+            buttons[i][j].setIcon(image_X);
+        } else
+            buttons[i][j].setIcon(image_Blank);
+    }
 
-    public void drawField() {
-        getPlayingField(gameFieldPanel);
-        add(gameFieldPanel);
-        setVisible(true);
+    public void drawField(boolean isFullUpdate) {
+        if (isFullUpdate) {
+            gameFieldPanel.setVisible(false);
+            for (int i = 0; i < field.getArrayLength(); i++) {
+                for (int j = 0; j < field.getArrayLength(i); j++) {
+                    updateDot(i,j);
+                    if (field.isWinDot(i, j))
+                        buttons[i][j].setBackground(new Color(0x94C2BE));
+                    else buttons[i][j].setBackground(null);
+                }
+            }
+            gameFieldPanel.setVisible(true);
+        }
+        else {
+            updateDot(field.getLastStepI(),field.getLastStepJ());
+        }
+       //setVisible(true);
     }
 
     private void newGame() {
@@ -235,13 +259,14 @@ public class MyGameWindow extends JFrame {
         }
         setLocationRelativeTo(null);
         buttons = null;
+        gameFieldPanel.setLayout(new GridLayout(size_Y, size_X));
         createJButtonsField();
         field.clear();
-        drawField();
+        drawField(true);
         if (field.getCurrentState() == Field.BOT_STEP && playerVsAi) {
             JOptionPane.showMessageDialog(null, "Не против, если я буду ходить первым?");
             field.doStep();
-            drawField();
+            drawField(false);
         } else if (playerVsAi)
             JOptionPane.showMessageDialog(null, "Ходи первый!");
         else JOptionPane.showMessageDialog(null, "Начинайте игру!");
@@ -268,10 +293,9 @@ public class MyGameWindow extends JFrame {
             return;
         }
         if (!field.doStep(i, j)) {
-            drawField();
             return;
         }
-        drawField();
+        drawField(false);
         if (field.isGameOver()) {
             drawResult();
             return;
@@ -279,14 +303,14 @@ public class MyGameWindow extends JFrame {
         if (!playerVsAi)
             return;
         field.doStep();
-        drawField();
+        drawField(false);
         if (field.isGameOver()) {
             drawResult();
         }
     }
 
     private void drawResult() {
-        drawField();
+        drawField(true);
         if (field.getCurrentState() == Field.STANDOFF)
             JOptionPane.showMessageDialog(null, "Больше линий здесь не нарисовать! Ничья!");
         else if (!playerVsAi)
@@ -295,26 +319,7 @@ public class MyGameWindow extends JFrame {
             JOptionPane.showMessageDialog(null, "ХА! Комп Победил!");
         else if (field.getCurrentState() == Field.playerWin)
             JOptionPane.showMessageDialog(null, "Мои поздравления! Ты выиграл!");
-
-//        JOptionPane.showMessageDialog(null, "\"Спасибо за игру!\"");
-//        setVisible(false);
     }
 
-    private void getPlayingField(JPanel component) {
-        component.setLayout(new GridLayout(size_Y, size_X));
-        for (int i = 0; i < field.getArrayLength(); i++) {
-            for (int j = 0; j < field.getArrayLength(i); j++) {
-                if (field.getArraySymbol(i, j) == '0')
-                    buttons[i][j].setIcon(image_0);
-                else if (field.getArraySymbol(i, j) == 'X') {
-                    buttons[i][j].setIcon(image_X);
-                } else
-                    buttons[i][j].setIcon(image_Blank);
-                if (field.isWinDot(i, j))
-                    buttons[i][j].setBackground(new Color(0x94C2BE));
-                else buttons[i][j].setBackground(null);
-            }
-        }
-        component.setVisible(true);
-    }
+
 }

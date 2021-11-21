@@ -22,6 +22,8 @@ public class Field {
     private final char emptyDot = '∙';
 
     private Line winLine;
+    private int lastStepI;
+    private int lastStepJ;
 
 
     public Field(int sizeX, int sizeY, int winLineLength) {
@@ -64,6 +66,14 @@ public class Field {
         return field[i][j];
     }
 
+    public int getLastStepI() {
+        return lastStepI;
+    }
+
+    public int getLastStepJ() {
+        return lastStepJ;
+    }
+
     public void doStep() {
         if (!hasEmptySlot()) {
             currentState = STANDOFF;
@@ -76,9 +86,9 @@ public class Field {
     }
 
     public boolean doStep(int x, int y) {
+
         if (currentState==BOT_STEP)
             return doStep(x, y, botChar);
-
         else
              return doStep(x, y, userChar);
     }
@@ -87,6 +97,8 @@ public class Field {
         if (field[x][y] == emptyDot) {
             field[x][y] = symbol;
             currentState = (symbol == botChar) ? PLAYER_STEP : BOT_STEP;
+            lastStepI =x;
+            lastStepJ=y;
             return true;
         }
         return false;

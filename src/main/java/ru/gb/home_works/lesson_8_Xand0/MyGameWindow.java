@@ -39,8 +39,6 @@ public class MyGameWindow extends JFrame {
 
         setVisible(true);
         new SettingWindow();
-
-
     }
 
     class SettingWindow extends JFrame {
@@ -57,26 +55,20 @@ public class MyGameWindow extends JFrame {
             temp_sizeY = size_Y;
             temp_winLineLength = winLineLength;
 
-
             setTitle("Настройки");
             setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
             setResizable(false);
             setSize(300, 300);
             setLocationRelativeTo(null);
             setLayout(new GridLayout(8, 1));
-            addGameMode();
-
 
             addGameSize();
 
-
             add(new JLabel(""));
-
             JButton btnStart = new JButton("Start new game");
             btnStart.addActionListener(e -> submitSettings());
             add(btnStart);
             setVisible(true);
-
         }
 
         private void submitSettings() {
@@ -86,7 +78,6 @@ public class MyGameWindow extends JFrame {
             winLineLength = temp_winLineLength;
             setVisible(false);
             newGame();
-
         }
 
         private void addGameSize() {
@@ -109,8 +100,6 @@ public class MyGameWindow extends JFrame {
                 if (temp_sizeY > 15) temp_sizeY = 15;
                 updateTextElements();
             });
-
-
             add(labelFieldSize);
             add(sliderFieldWidth);
             add(labelWinLength);
@@ -122,7 +111,6 @@ public class MyGameWindow extends JFrame {
                 labelWinLength.setText(String.format("Победа = %d клеток", temp_winLineLength));
             else
                 labelWinLength.setText(String.format("Победа = %d клетки", temp_winLineLength));
-
         }
 
         private void addGameMode() {
@@ -131,18 +119,14 @@ public class MyGameWindow extends JFrame {
             humanVsAi = new JRadioButton("Против компьютера", playerVsAi);
             humanVsHuman = new JRadioButton("Два игрока", !playerVsAi);
             ButtonGroup gameMode = new ButtonGroup();
+
             gameMode.add(humanVsAi);
             gameMode.add(humanVsHuman);
-
 
             add(labelMode);
             add(humanVsAi);
             add(humanVsHuman);
-
-
         }
-
-
     }
 
     private void createMenu() {
@@ -170,7 +154,6 @@ public class MyGameWindow extends JFrame {
             }
         });
 
-
         JMenuItem cats = new JMenuItem("Котики");
         cats.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -197,14 +180,11 @@ public class MyGameWindow extends JFrame {
             }
         });
 
-
         select_images.add(cats);
         select_images.add(smiles);
         select_images.add(bugs);
 
-
         exitItem.setMaximumSize(new Dimension(100, 100));
-
         new_game_menu.add(new_game);
         new_game_menu.add(settings);
         menuBar.add(new_game_menu);
@@ -235,7 +215,6 @@ public class MyGameWindow extends JFrame {
         } else {
             updateDot(field.getLastStepI(), field.getLastStepJ());
         }
-        System.out.println(field);
         //setVisible(true);
     }
 
@@ -303,6 +282,4 @@ public class MyGameWindow extends JFrame {
         else if (field.getCurrentState() == Field.playerWin)
             JOptionPane.showMessageDialog(null, "Мои поздравления! Ты выиграл!");
     }
-
-
 }

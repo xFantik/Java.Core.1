@@ -10,12 +10,10 @@ import java.awt.event.ActionListener;
 public class MyGameWindow extends JFrame {
     private ImageIcon image_X;
     private ImageIcon image_0;
-    private ImageIcon image_Blank;
     int elementSize = 50;
     private int size_X = 30;
     private int size_Y = 15;
     int winLineLength = 5;
-    JButton[][] buttons;
     private JPanel gameFieldPanel;
     Field field;
     private boolean playerVsAi = true;
@@ -25,7 +23,6 @@ public class MyGameWindow extends JFrame {
     }
 
     public MyGameWindow() {
-
         setTitle("Крестики-нолики");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -34,12 +31,10 @@ public class MyGameWindow extends JFrame {
 
         image_0 = new ImageIcon("src/images/smile3.png");
         image_X = new ImageIcon("src/images/smile4.png");
-        image_Blank = new ImageIcon("src/images/blank.png");
         gameFieldPanel = new JPanel();
         createMenu();
-
 //        newGame();
-//        drawField();
+//        drawField(true);
         add(gameFieldPanel);
 
         setVisible(true);
@@ -99,24 +94,20 @@ public class MyGameWindow extends JFrame {
             labelWinLength = new JLabel();
             updateTextElements();
             JSlider sliderFieldWidth = new JSlider(3, 35, temp_sizeX);
-            sliderFieldWidth.addChangeListener(new ChangeListener() {
-                @Override
-                public void stateChanged(ChangeEvent e) {
-                    int currentValue = sliderFieldWidth.getValue();
-                    if (currentValue < 5) {
-                        temp_winLineLength = 3;
-                    } else if (currentValue == 5) {
-                        temp_winLineLength = 4;
-
-                        sliderFieldWidth.setValue(currentValue);
-                    } else {
-                        temp_winLineLength = 5;
-                    }
-                    temp_sizeY = currentValue;
-                    temp_sizeX = currentValue;
-                    if (temp_sizeY > 15) temp_sizeY = 15;
-                    updateTextElements();
+            sliderFieldWidth.addChangeListener(e -> {
+                int currentValue = sliderFieldWidth.getValue();
+                if (currentValue == 3) {
+                    temp_winLineLength = 3;
+                } else if (currentValue <= 5) {
+                    temp_winLineLength = 4;
+                    sliderFieldWidth.setValue(currentValue);
+                } else {
+                    temp_winLineLength = 5;
                 }
+                temp_sizeY = currentValue;
+                temp_sizeX = currentValue;
+                if (temp_sizeY > 15) temp_sizeY = 15;
+                updateTextElements();
             });
 
 
@@ -185,7 +176,7 @@ public class MyGameWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 image_0 = new ImageIcon("src/images/dog.png");
                 image_X = new ImageIcon("src/images/cat.png");
-                drawField(true);
+                refreshField(true);
             }
         });
 
@@ -194,7 +185,7 @@ public class MyGameWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 image_X = new ImageIcon("src/images/smile1.png");
                 image_0 = new ImageIcon("src/images/smile2.png");
-                drawField(true);
+                refreshField(true);
             }
         });
         JMenuItem bugs = new JMenuItem("Жуки");
@@ -202,7 +193,7 @@ public class MyGameWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 image_X = new ImageIcon("src/images/smile4.png");
                 image_0 = new ImageIcon("src/images/smile3.png");
-                drawField(true);
+                refreshField(true);
             }
         });
 
@@ -222,32 +213,30 @@ public class MyGameWindow extends JFrame {
         setJMenuBar(menuBar);
     }
 
-    private void updateDot(int i, int j){
+    private void updateDot(int i, int j) {
         if (field.getArraySymbol(i, j) == '0')
-            buttons[i][j].setIcon(image_0);
+            ((JButton) gameFieldPanel.getComponent(i * size_X + j)).setIcon(image_0);
         else if (field.getArraySymbol(i, j) == 'X') {
-            buttons[i][j].setIcon(image_X);
-        } else
-            buttons[i][j].setIcon(image_Blank);
+            ((JButton) gameFieldPanel.getComponent(i * size_X + j)).setIcon(image_X);
+        }
     }
 
-    public void drawField(boolean isFullUpdate) {
+    public void refreshField(boolean isFullUpdate) {
         if (isFullUpdate) {
             gameFieldPanel.setVisible(false);
             for (int i = 0; i < field.getArrayLength(); i++) {
                 for (int j = 0; j < field.getArrayLength(i); j++) {
-                    updateDot(i,j);
+                    updateDot(i, j);
                     if (field.isWinDot(i, j))
-                        buttons[i][j].setBackground(new Color(0x94C2BE));
-                    else buttons[i][j].setBackground(null);
+                        ((JButton) gameFieldPanel.getComponent(i * size_X + j)).setBackground(new Color(0x94C2BE));
                 }
             }
             gameFieldPanel.setVisible(true);
+        } else {
+            updateDot(field.getLastStepI(), field.getLastStepJ());
         }
-        else {
-            updateDot(field.getLastStepI(),field.getLastStepJ());
-        }
-       //setVisible(true);
+        System.out.println(field);
+        //setVisible(true);
     }
 
     private void newGame() {
@@ -258,15 +247,14 @@ public class MyGameWindow extends JFrame {
             setSize(elementSize * size_X, elementSize * size_Y);
         }
         setLocationRelativeTo(null);
-        buttons = null;
         gameFieldPanel.setLayout(new GridLayout(size_Y, size_X));
         createJButtonsField();
         field.clear();
-        drawField(true);
+        refreshField(true);
         if (field.getCurrentState() == Field.BOT_STEP && playerVsAi) {
             JOptionPane.showMessageDialog(null, "Не против, если я буду ходить первым?");
             field.doStep();
-            drawField(false);
+            refreshField(false);
         } else if (playerVsAi)
             JOptionPane.showMessageDialog(null, "Ходи первый!");
         else JOptionPane.showMessageDialog(null, "Начинайте игру!");
@@ -274,16 +262,11 @@ public class MyGameWindow extends JFrame {
 
     private void createJButtonsField() {
         gameFieldPanel.removeAll();
-        buttons = new JButton[size_Y][size_X];
-        for (int i = 0; i < buttons.length; i++) {
-            for (int j = 0; j < buttons[i].length; j++) {
-                JButton button = new JButton();
-                buttons[i][j] = button;
-                int finalI = i;
-                int finalJ = j;
-                button.addActionListener(actionEvent -> click(finalI, finalJ));
-                gameFieldPanel.add(button);
-            }
+        for (int i = 0; i < size_X * size_Y; i++) {
+            JButton button = new JButton();
+            int finalI = i;
+            button.addActionListener(actionEvent -> click(finalI / size_X, finalI % size_X));
+            gameFieldPanel.add(button);
         }
     }
 
@@ -295,7 +278,7 @@ public class MyGameWindow extends JFrame {
         if (!field.doStep(i, j)) {
             return;
         }
-        drawField(false);
+        refreshField(false);
         if (field.isGameOver()) {
             drawResult();
             return;
@@ -303,14 +286,14 @@ public class MyGameWindow extends JFrame {
         if (!playerVsAi)
             return;
         field.doStep();
-        drawField(false);
+        refreshField(false);
         if (field.isGameOver()) {
             drawResult();
         }
     }
 
     private void drawResult() {
-        drawField(true);
+        refreshField(true);
         if (field.getCurrentState() == Field.STANDOFF)
             JOptionPane.showMessageDialog(null, "Больше линий здесь не нарисовать! Ничья!");
         else if (!playerVsAi)

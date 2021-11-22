@@ -13,7 +13,7 @@ public class HomeWorkApp {
         {                                                               //Доп задание из телеги (шифр Цезаря)
             System.out.println("\n\n\n\n");
             int key = -21;
-            String s_crypt = (crypt("Димооооон!!! ЗАбей на эти работы!))) =))", key));
+            String s_crypt = (crypt("Зашифруйте мне эту строку =))", key));
             System.out.println("Зашифрованная строка: " + s_crypt);
             String s_decrypt = (decrypt(s_crypt, key));
             System.out.println("Расшифрованная строка: " + s_decrypt);
@@ -35,6 +35,7 @@ public class HomeWorkApp {
     }
 
     public static String crypt(String s, int key){
+//        String result = "";
         StringBuilder result=new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             char symbol=s.charAt(i);

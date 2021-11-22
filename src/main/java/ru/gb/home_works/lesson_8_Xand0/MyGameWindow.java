@@ -62,7 +62,9 @@ public class MyGameWindow extends JFrame {
             setLocationRelativeTo(null);
             setLayout(new GridLayout(8, 1));
 
+            addGameMode();
             addGameSize();
+
 
             add(new JLabel(""));
             JButton btnStart = new JButton("Start new game");
